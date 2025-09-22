@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Goal Calculator - Reach Your Financial Dreams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #718096;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem 2rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Form Styles */
+        .form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:invalid {
+            border-color: #e53e3e;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+
+        /* Button Styles */
+        .calculate-btn,
+        .primary-btn,
+        .secondary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .calculate-btn,
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 100%;
+        }
+
+        .calculate-btn:hover,
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .secondary-btn:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        /* Result Card Styles */
+        .result-card {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-content {
+            padding: 2rem;
+        }
+
+        .result-highlight {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f0fff4, #e6fffa);
+            border-radius: 12px;
+            border: 1px solid #9ae6b4;
+        }
+
+        .result-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #38a169;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-amount .currency {
+            font-size: 2rem;
+        }
+
+        .result-amount small {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #68d391;
+        }
+
+        .result-description {
+            font-size: 1.1rem;
+            color: #2f855a;
+            font-weight: 500;
+        }
+
+        .result-details {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item .label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .detail-item .value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Error Card Styles */
+        .error-card {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .error-header {
+            background: linear-gradient(135deg, #fc8181, #f56565);
+        }
+
+        .error-content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .error-content p {
+            font-size: 1.1rem;
+            color: #e53e3e;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Footer Styles */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .footer-content p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Calculated Age Display */
+        .calculated-age {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            border: 1px solid #81e6d9;
+            border-radius: 8px;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .age-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #2c7a7b;
+            font-weight: 500;
+        }
+
+        .age-display strong {
+            color: #285e61;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .calculate-btn {
+            background: #a0aec0;
+        }
+
+        .loading .calculate-btn::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            margin-left: 8px;
+            border: 2px solid transparent;
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content {
+                padding: 1.5rem;
+            }
+            
+            .card-header,
+            .form,
+            .result-content {
+                padding: 1.5rem;
+            }
+            
+            .result-amount {
+                font-size: 2.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .secondary-btn,
+            .primary-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .result-amount {
+                font-size: 2rem;
+            }
+            
+            .card-header,
+            .form,
+            .result-content {
+                padding: 1rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <i class="fas fa-piggy-bank header-icon"></i>
+                <h1>Savings Goal Calculator</h1>
+                <p class="subtitle">Calculate how much you need to save monthly to reach your financial goal by age 30</p>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calculator"></i> Calculate Your Monthly Savings</h2>
+                </div>
+                
+                <form id="savingsForm" class="form">
+                    <div class="form-group">
+                        <label for="birthDate">
+                            <i class="fas fa-birthday-cake"></i>
+                            Date of Birth
+                        </label>
+                        <input 
+                            type="date" 
+                            id="birthDate" 
+                            name="birthDate" 
+                            placeholder="Select your birth date"
+                            required
+                        >
+                        <small class="help-text">Your age will be calculated automatically (must result in age less than 30)</small>
+                        <div id="calculatedAge" class="calculated-age" style="display: none;">
+                            <span class="age-display">
+                                <i class="fas fa-user"></i>
+                                Current Age: <strong id="ageValue">--</strong> years old
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetAmount">
+                            <i class="fas fa-dollar-sign"></i>
+                            Target Savings by Age 30
+                        </label>
+                        <input 
+                            type="number" 
+                            id="targetAmount" 
+                            name="targetAmount" 
+                            placeholder="Enter your savings goal"
+                            min="1" 
+                            step="0.01"
+                            required
+                        >
+                        <small class="help-text">Enter the amount you want to save by age 30</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interestRate">
+                            <i class="fas fa-percentage"></i>
+                            Annual Interest Rate (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="interestRate" 
+                            name="interestRate" 
+                            placeholder="Enter annual interest rate"
+                            min="0" 
+                            max="50"
+                            step="0.01"
+                            required
+                        >
+                        <small class="help-text">Enter the average savings account interest rate in your country</small>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Calculate Monthly Savings
+                    </button>
+                </form>
+            </div>
+
+            <div id="resultCard" class="card result-card" style="display: none;">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-pie"></i> Your Savings Plan</h2>
+                </div>
+                
+                <div class="result-content">
+                    <div class="result-highlight">
+                        <div class="result-amount">
+                            <span class="currency">$</span>
+                            <span id="monthlyAmount">0</span>
+                            <small>/month</small>
+                        </div>
+                        <p class="result-description">You need to save this amount monthly</p>
+                    </div>
+
+                    <div class="result-details">
+                        <div class="detail-item">
+                            <span class="label">Birth Date:</span>
+                            <span id="resultBirthDate" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Current Age:</span>
+                            <span id="resultAge" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Target Age:</span>
+                            <span class="value">30 years</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Savings Period:</span>
+                            <span id="resultPeriod" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Annual Interest Rate:</span>
+                            <span id="resultRate" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Target Amount:</span>
+                            <span id="resultTarget" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Total Contributions:</span>
+                            <span id="resultContributions" class="value"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Interest Earned:</span>
+                            <span id="resultInterest" class="value"></span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" id="recalculateBtn" class="secondary-btn">
+                            <i class="fas fa-redo"></i>
+                            Try Different Values
+                        </button>
+                        <button type="button" id="shareBtn" class="primary-btn">
+                            <i class="fas fa-share"></i>
+                            Share Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorCard" class="card error-card" style="display: none;">
+                <div class="card-header error-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Oops!</h2>
+                </div>
+                <div class="error-content">
+                    <p id="errorMessage"></p>
+                    <button type="button" id="tryAgainBtn" class="secondary-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p><i class="fas fa-info-circle"></i> This calculator assumes monthly compound interest and starts from $0 initial savings.</p>
+                <p>Results are estimates and should not be considered financial advice.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        /**
+         * Savings Goal Calculator
+         * Calculates monthly savings needed to reach a target amount by age 30
+         */
+
+        class SavingsCalculator {
+            constructor() {
+                this.form = document.getElementById('savingsForm');
+                this.resultCard = document.getElementById('resultCard');
+                this.errorCard = document.getElementById('errorCard');
+                
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                // Form submission
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.calculateSavings();
+                });
+
+                // Recalculate button
+                document.getElementById('recalculateBtn').addEventListener('click', () => {
+                    this.resetCalculator();
+                });
+
+                // Try again button
+                document.getElementById('tryAgainBtn').addEventListener('click', () => {
+                    this.resetCalculator();
+                });
+
+                // Share button
+                document.getElementById('shareBtn').addEventListener('click', () => {
+                    this.shareResults();
+                });
+
+                // Real-time validation
+                this.setupRealTimeValidation();
+            }
+
+            setupRealTimeValidation() {
+                const birthDateInput = document.getElementById('birthDate');
+                const targetAmountInput = document.getElementById('targetAmount');
+                const interestRateInput = document.getElementById('interestRate');
+
+                birthDateInput.addEventListener('input', () => {
+                    this.calculateAndDisplayAge();
+                });
+
+                targetAmountInput.addEventListener('input', () => {
+                    this.formatCurrency(targetAmountInput);
+                });
+
+                interestRateInput.addEventListener('input', () => {
+                    this.validateInterestRate(interestRateInput.value);
+                });
+            }
+
+            calculateAndDisplayAge() {
+                const birthDateInput = document.getElementById('birthDate');
+                const calculatedAgeDiv = document.getElementById('calculatedAge');
+                const ageValueSpan = document.getElementById('ageValue');
+                
+                const birthDate = birthDateInput.value;
+                if (!birthDate) {
+                    calculatedAgeDiv.style.display = 'none';
+                    birthDateInput.setCustomValidity('');
+                    return null;
+                }
+                
+                const age = this.calculateAgeFromBirthDate(birthDate);
+                
+                // Display the calculated age
+                ageValueSpan.textContent = age;
+                calculatedAgeDiv.style.display = 'block';
+                
+                // Validate age
+                if (age >= 30) {
+                    birthDateInput.setCustomValidity('You must be younger than 30 to use this calculator');
+                } else if (age < 1) {
+                    birthDateInput.setCustomValidity('Please enter a valid birth date');
+                } else {
+                    birthDateInput.setCustomValidity('');
+                }
+                
+                return age;
+            }
+            
+            calculateAgeFromBirthDate(birthDateString) {
+                const today = new Date();
+                const birthDate = new Date(birthDateString);
+                
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                // Adjust age if birthday hasn't occurred this year yet
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+
+            validateInterestRate(rate) {
+                const rateNum = parseFloat(rate);
+                const rateInput = document.getElementById('interestRate');
+                
+                if (rateNum < 0) {
+                    rateInput.setCustomValidity('Interest rate cannot be negative');
+                } else if (rateNum > 50) {
+                    rateInput.setCustomValidity('Interest rate seems too high (max 50%)');
+                } else {
+                    rateInput.setCustomValidity('');
+                }
+            }
+
+            formatCurrency(input) {
+                let value = input.value.replace(/[^\d.]/g, '');
+                if (value) {
+                    // Ensure only one decimal point
+                    const parts = value.split('.');
+                    if (parts.length > 2) {
+                        value = parts[0] + '.' + parts.slice(1).join('');
+                    }
+                    input.value = value;
+                }
+            }
+
+            calculateSavings() {
+                // Show loading state
+                this.form.classList.add('loading');
+                
+                // Get form values
+                const birthDate = document.getElementById('birthDate').value;
+                const currentAge = this.calculateAgeFromBirthDate(birthDate);
+                const targetAmount = parseFloat(document.getElementById('targetAmount').value);
+                const annualInterestRate = parseFloat(document.getElementById('interestRate').value);
+
+                // Validate inputs
+                const validation = this.validateInputs(birthDate, currentAge, targetAmount, annualInterestRate);
+                if (!validation.isValid) {
+                    this.showError(validation.message);
+                    this.form.classList.remove('loading');
+                    return;
+                }
+
+                // Calculate savings
+                setTimeout(() => {
+                    try {
+                        const result = this.performCalculation(birthDate, currentAge, targetAmount, annualInterestRate);
+                        this.displayResults(result);
+                    } catch (error) {
+                        this.showError('An error occurred during calculation. Please check your inputs and try again.');
+                        console.error('Calculation error:', error);
+                    } finally {
+                        this.form.classList.remove('loading');
+                    }
+                }, 500); // Small delay for better UX
+            }
+
+            validateInputs(birthDate, currentAge, targetAmount, annualInterestRate) {
+                if (!birthDate) {
+                    return { isValid: false, message: 'Please select your birth date.' };
+                }
+                
+                if (!currentAge || currentAge < 1) {
+                    return { isValid: false, message: 'Please enter a valid birth date.' };
+                }
+
+                if (currentAge >= 30) {
+                    return { isValid: false, message: 'You\'ve already reached the target age of 30! Consider setting a new goal for a later age.' };
+                }
+
+                if (!targetAmount || targetAmount <= 0) {
+                    return { isValid: false, message: 'Please enter a valid target savings amount.' };
+                }
+
+                if (targetAmount > 10000000) {
+                    return { isValid: false, message: 'Target amount seems very high. Please enter a more realistic goal.' };
+                }
+
+                if (annualInterestRate < 0) {
+                    return { isValid: false, message: 'Interest rate cannot be negative.' };
+                }
+
+                if (annualInterestRate > 50) {
+                    return { isValid: false, message: 'Interest rate seems too high. Please enter a more realistic rate.' };
+                }
+
+                return { isValid: true };
+            }
+
+            performCalculation(birthDate, currentAge, targetAmount, annualInterestRate) {
+                // Calculate time to target age
+                const yearsToTarget = 30 - currentAge;
+                const monthsToTarget = yearsToTarget * 12;
+
+                if (monthsToTarget <= 0) {
+                    throw new Error('Invalid time period');
+                }
+
+                // Convert annual interest rate to monthly
+                const monthlyInterestRate = annualInterestRate / 100 / 12;
+
+                let monthlyPayment;
+
+                if (monthlyInterestRate === 0) {
+                    // No interest case - simple division
+                    monthlyPayment = targetAmount / monthsToTarget;
+                } else {
+                    // Compound interest case using Future Value of Ordinary Annuity formula
+                    // FV = PMT × [((1 + r)^n - 1) / r]
+                    // Solving for PMT: PMT = FV / [((1 + r)^n - 1) / r]
+                    
+                    const compoundFactor = Math.pow(1 + monthlyInterestRate, monthsToTarget);
+                    const annuityFactor = (compoundFactor - 1) / monthlyInterestRate;
+                    monthlyPayment = targetAmount / annuityFactor;
+                }
+
+                // Calculate total contributions and interest earned
+                const totalContributions = monthlyPayment * monthsToTarget;
+                const totalInterest = targetAmount - totalContributions;
+
+                return {
+                    birthDate,
+                    currentAge,
+                    targetAmount,
+                    annualInterestRate,
+                    monthlyPayment,
+                    monthsToTarget,
+                    yearsToTarget,
+                    totalContributions,
+                    totalInterest
+                };
+            }
+
+            displayResults(result) {
+                // Hide error card and show result card
+                this.errorCard.style.display = 'none';
+                this.resultCard.style.display = 'block';
+
+                // Update result values
+                document.getElementById('monthlyAmount').textContent = this.formatNumber(result.monthlyPayment);
+                document.getElementById('resultBirthDate').textContent = this.formatBirthDate(result.birthDate);
+                document.getElementById('resultAge').textContent = `${result.currentAge} years`;
+                document.getElementById('resultPeriod').textContent = `${result.monthsToTarget} months (${result.yearsToTarget} years)`;
+                document.getElementById('resultRate').textContent = `${result.annualInterestRate}%`;
+                document.getElementById('resultTarget').textContent = `$${this.formatNumber(result.targetAmount)}`;
+                document.getElementById('resultContributions').textContent = `$${this.formatNumber(result.totalContributions)}`;
+                document.getElementById('resultInterest').textContent = `$${this.formatNumber(result.totalInterest)}`;
+
+                // Store result for sharing
+                this.lastResult = result;
+
+                // Scroll to result
+                this.resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            showError(message) {
+                // Hide result card and show error card
+                this.resultCard.style.display = 'none';
+                this.errorCard.style.display = 'block';
+
+                document.getElementById('errorMessage').textContent = message;
+
+                // Scroll to error
+                this.errorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            resetCalculator() {
+                // Hide result and error cards
+                this.resultCard.style.display = 'none';
+                this.errorCard.style.display = 'none';
+
+                // Focus on first input
+                document.getElementById('birthDate').focus();
+                
+                // Reset calculated age display
+                document.getElementById('calculatedAge').style.display = 'none';
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            shareResults() {
+                if (!this.lastResult) return;
+
+                const result = this.lastResult;
+                const shareText = `🎯 My Savings Goal Calculator Results:
+
+🎂 Birth Date: ${this.formatBirthDate(result.birthDate)}
+👤 Current Age: ${result.currentAge} years
+💰 Target by age 30: $${this.formatNumber(result.targetAmount)}
+📅 Monthly savings needed: $${this.formatNumber(result.monthlyPayment)}
+⏰ Time remaining: ${result.yearsToTarget} years
+📈 Interest rate: ${result.annualInterestRate}%
+
+Calculate your savings goal at: ${window.location.href}`;
+
+                if (navigator.share) {
+                    // Use native sharing if available
+                    navigator.share({
+                        title: 'Savings Goal Calculator Results',
+                        text: shareText,
+                        url: window.location.href
+                    }).catch(err => {
+                        console.log('Error sharing:', err);
+                        this.fallbackShare(shareText);
+                    });
+                } else {
+                    this.fallbackShare(shareText);
+                }
+            }
+
+            fallbackShare(text) {
+                // Copy to clipboard as fallback
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.showShareFeedback('Results copied to clipboard!');
+                    }).catch(err => {
+                        console.log('Error copying to clipboard:', err);
+                        this.showShareModal(text);
+                    });
+                } else {
+                    this.showShareModal(text);
+                }
+            }
+
+            showShareFeedback(message) {
+                const shareBtn = document.getElementById('shareBtn');
+                const originalText = shareBtn.innerHTML;
+                
+                shareBtn.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+                shareBtn.style.background = '#48bb78';
+                
+                setTimeout(() => {
+                    shareBtn.innerHTML = originalText;
+                    shareBtn.style.background = '';
+                }, 2000);
+            }
+
+            showShareModal(text) {
+                // Simple modal for manual copying
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.5); display: flex; align-items: center;
+                    justify-content: center; z-index: 1000; padding: 20px;
+                `;
+                
+                modal.innerHTML = `
+                    <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px; width: 100%;">
+                        <h3 style="margin-bottom: 1rem;">Share Your Results</h3>
+                        <textarea style="width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" readonly>${text}</textarea>
+                        <div style="margin-top: 1rem; text-align: right;">
+                            <button onclick="this.closest('div').parentElement.remove()" style="padding: 0.5rem 1rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            formatNumber(number) {
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(number);
+            }
+            
+            formatBirthDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        }
+
+        // Initialize the calculator when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SavingsCalculator();
+        });
+    </script>
+</body>
+</html>
